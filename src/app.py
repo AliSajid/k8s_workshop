@@ -31,8 +31,12 @@ def index():
     repositories = g.search_repositories(query=f"language:{language}")[:n]
 
     for repo in repositories:
-        with urllib.request.urlopen(repo.url) as url:
-            data = json.loads(url.read().decode())
+        data = {
+            "name": repo.name,
+            "url": repo.url,
+            "stars": repo.watchers_count,
+            "watchers": repo.watchers_count
+        }
         r.append(data)
 
     return jsonify({"repos": r})
