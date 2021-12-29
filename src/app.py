@@ -1,46 +1,46 @@
-"""
-Test project for kubernetes workshop
-"""
-
-
 from flask import Flask, jsonify, abort, request
 import urllib.request, json, os
-
 from github import Github
-
-GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
-GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
-DEBUG = os.getenv("DEBUG")
-
-g = Github(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET)
 
 app = Flask(__name__)
 
+CLIENT_ID = os.getenv('CLIENT_ID')
+CLIENT_SECRET = os.getenv('CLIENT_SECRET')
+DEBUG = os.getenv('DEBUG')
+HOST = os.getenv('HOST')
+PORT = os.getenv('PORT')
 
-@app.route("/")
-def index():
+g = Github(CLIENT_ID, CLIENT_SECRET)
+
+
+@app.route('/')
+def get_repos():
     r = []
 
     try:
         args = request.args
-        n = int(args["n"])
-        language = args.get("language", "python")
+        n = int(args['n'])
+        l = args['l']
     except (ValueError, LookupError) as e:
-        abort(jsonify(error="No integer provided for argument 'n' in the URL"))
+        abort(jsonify(error="Please provide 'n' and 'l' parameters"))
 
-    repositories = g.search_repositories(query=f"language:{language}")[:n]
-
-    for repo in repositories:
-        data = {
-            "name": repo.name,
-            "url": repo.url,
-            "stars": repo.watchers_count,
-            "watchers": repo.watchers_count
-        }
-        r.append(data)
-
-    return jsonify({"repos": r})
+    repositories = g.search_repositories(query='language:' + l)[:n]
 
 
-if __name__ == "__main__":
-    app.run(debug=DEBUG)
+    try:
+        for repo in repositories:
+            with urllib.request.urlopen(repo.url) as url:
+                data = json.loads(url.read().decode())
+            r.append(data)
+        return jsonify({
+            'repos':r,
+            'status': 'ok'
+            })
+    except IndexError as e:
+        return jsonify({
+            'repos':r,
+            'status': 'ko'
+            })
+
+if __name__ == '__main__':
+    app.run(debug=DEBUG, host=HOST, port=PORT)
