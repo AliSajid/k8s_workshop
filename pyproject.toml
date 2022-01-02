@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "k8s_workshop"
-version = "0.6.0"
+version = "1.0.0"
 description = ""
 authors = ["Ali Sajid Imami <Ali.Sajid.Imami@gmail.com>"]
 license = "GPLv3"
