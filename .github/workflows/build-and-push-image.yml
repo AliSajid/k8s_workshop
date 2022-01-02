@@ -1,10 +1,12 @@
-name: Demo Push
+name: Build and Push Docker Image
 
 on:   
   push:
     # Publish `v1.2.3` tags as releases.
     tags:
       - v*
+  release:
+    types: [published, created, edited]
 env:
   IMAGE_NAME: k8s_workshop
 
