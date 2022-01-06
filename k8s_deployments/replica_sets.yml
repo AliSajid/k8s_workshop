@@ -1,0 +1,20 @@
+apiVersion: extesions/v1beta1
+kind: ReplicaSet
+metadata:
+  name: app
+spec:
+  replicas: 3
+  selector:
+   matchLabels:
+    app: app
+  template:
+   metadata:
+    labels:
+     app: app
+     environment: dev
+    spec:
+     containers:
+      - name: tgrapp
+        image: ghcr.io/alisajid/k8s_workshop:1.0.3
+        ports:
+         - containerPort: 5000
