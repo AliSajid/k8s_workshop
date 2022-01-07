@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tgrlb
+  labels:
+    name: tgrlb
+spec:
+  selector:
+    name: tgrasi
+  ports:
+  - port: 80
+    targetPort: 5000
+  type: LoadBalancer
