@@ -1,7 +1,7 @@
 module "condor" {
   source                 = "vultr/condor/vultr"
   version                = "2.0.0"
-  provisioner_public_key = file(var.ssh_public_key)
+  provisioner_public_key = base64decode(var.ssh_public_key)
   cluster_vultr_api_key  = var.cluster_vultr_api_key
   cluster_name = "workshop"
 
