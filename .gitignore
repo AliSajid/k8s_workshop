@@ -275,3 +275,5 @@ terraform.rc
 # End of https://www.toptal.com/developers/gitignore/api/flask,python,terraform
 
 *.kubeconfig
+k8s_deployments/vultr_api_secret_csi.yml
+k8s_deployments/vultr_api_secret_ccm.yml
