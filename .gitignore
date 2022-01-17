@@ -277,3 +277,4 @@ terraform.rc
 *.kubeconfig
 k8s_deployments/vultr_api_secret_csi.yml
 k8s_deployments/vultr_api_secret_ccm.yml
+k8s_deployments/github-api-secrets.yml
