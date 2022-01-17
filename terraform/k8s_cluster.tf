@@ -1,15 +1,11 @@
-module "condor" {
-  source                 = "vultr/condor/vultr"
-  version                = "2.0.0"
-  provisioner_public_key = base64decode(var.ssh_public_key)
-  cluster_vultr_api_key  = var.cluster_vultr_api_key
-  cluster_name = "workshop"
+resource "vultr_kubernetes" "k8s_workshop" {
+  region = "ewr"
+  label     = "k8s_workshop"
+  version = "v1.21.7+2"
 
-  control_plane_firewall_rules = [
-    {
-      port    = 6443
-      ip_type = "v4"
-      source  = "0.0.0.0/0"
-    }
-  ]
-}
+  node_pools {
+    node_quantity = 3
+    plan = "vc2-2c-4gb"
+    label = "workshop"
+  }
+} 
