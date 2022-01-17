@@ -1,9 +1,14 @@
 from flask import Flask, jsonify, abort, request
 import urllib.request, json, os
 from github import Github
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 app = Flask(__name__)
 
+logger.error("Loading Environment Variables")
 CLIENT_ID = os.getenv('CLIENT_ID')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 DEBUG = os.getenv('DEBUG')
@@ -18,10 +23,12 @@ def get_repos():
     r = []
 
     try:
+        logger.error(f"Recieved following request args: {request.args}")
         args = request.args
         n = int(args['n'])
         l = args['l']
     except (ValueError, LookupError) as e:
+        logger.error("Necessary arguments not found. Aborting.")
         abort(jsonify(error="Please provide 'n' and 'l' parameters"))
 
     repositories = g.search_repositories(query='language:' + l)[:n]
