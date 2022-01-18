@@ -1,15 +1,21 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: tgrlb
+  name: tgrasi
   annotations:
-    service.beta.kubernetes.io/vultr-loadbalancer-protocol: "http"
-  labels:
-    name: tgrlb
+    getambassador.io/config: |
+      ---
+      apiVersion: ambassador/v1
+      kind: Mapping
+      name: tgrasi_mapping
+      prefix: /tgrasi
+      service: tgrasi:5000
+
 spec:
+  ports:
+  - name: tgrasi
+    port: 5000
+    targetPort: 5000
   selector:
     app: tgrasi
-  ports:
-  - port: 80
-    targetPort: 5000
-  type: LoadBalancer
