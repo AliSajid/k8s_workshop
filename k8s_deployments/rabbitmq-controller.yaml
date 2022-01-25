@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: rabbitmq
+    app: taskQueue
+  name: rabbitmq-controller
+spec:
+  selector:
+    matchLabels:
+      component: rabbitmq
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: taskQueue
+        component: rabbitmq
+    spec:
+      containers:
+      - image: rabbitmq
+        name: rabbitmq
+        resources:
+          requests:
+            cpu: "100m"
+          limits:
+            cpu: "250m"
+            memory: "256Mi"
+        ports:
+        - containerPort: 5672
