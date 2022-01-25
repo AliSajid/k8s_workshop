@@ -17,6 +17,8 @@ PORT = os.getenv('PORT')
 
 g = Github(CLIENT_ID, CLIENT_SECRET)
 
+def extract_repo_data(repo):
+    pass
 
 @app.route('/')
 def get_repos():
@@ -37,7 +39,7 @@ def get_repos():
     try:
         for repo in repositories:
             with urllib.request.urlopen(repo.url) as url:
-                data = json.loads(url.read().decode())
+                data = extract_repo_data(json.loads(url.read().decode()))
             r.append(data)
         return jsonify({
             'repos':r,
